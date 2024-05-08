@@ -18,3 +18,23 @@ On the client side, we modify this statement:
             .await?;
 ```
 This tells the client to stream messages from port 8080 on IP 127.0.0.1 with the protocol ws.
+
+## Shop Client IP and Port
+![show-ip](image-2.png)
+
+The server sends messages to clients by using the handle_connection function. It takes the client's address as one of its parameters, which includes the client's IP and port.
+
+Before, the server simply sends the client's message to all clients.
+
+```
+            msg = bcast_rx.recv() => {
+                ws_stream.send(Message::text(format!("{addr:?}: {msg:?}"))).await?;
+            }
+```
+
+Below, we modify the message to include the client's address that sent the message to the server.
+```
+            msg = bcast_rx.recv() => {
+                ws_stream.send(Message::text(format!("{addr:?}: {msg}", addr = addr, msg = msg?))).await?;
+            }
+```

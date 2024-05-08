@@ -35,7 +35,7 @@ async fn handle_connection(
                 }
             }
             msg = bcast_rx.recv() => {
-                ws_stream.send(Message::text(msg?)).await?;
+                ws_stream.send(Message::text(format!("{addr:?}: {msg}", addr = addr, msg = msg?))).await?;
             }
         }
     }
